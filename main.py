@@ -10,7 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 
-from models import NewGameRequest, TurnActionRequest, TurnActionResponse, GameState
+from models import NewGameRequest, TurnActionRequest, TurnActionResponse, GameState, CLASS_ARCHETYPES
 from narrative_engine import (
     ProceduralAdventureDirector, execute_turn, GAME_SESSIONS
 )
@@ -48,6 +48,12 @@ def get_art_styles():
         }
         for name, data in ART_STYLES.items()
     ]
+
+
+@app.get("/api/classes")
+def get_class_archetypes():
+    """Returns balanced player character classes with unique advantages and stats."""
+    return list(CLASS_ARCHETYPES.values())
 
 
 @app.post("/api/game/new", response_model=TurnActionResponse)

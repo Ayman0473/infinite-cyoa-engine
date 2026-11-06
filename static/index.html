@@ -272,8 +272,14 @@
       </div>
 
       <div class="form-group">
-        <label>Archetype / Class</label>
-        <input type="text" class="form-control" id="new-game-archetype" value="Runic Scholar" placeholder="e.g. Rogue Netrunner, Void Explorer">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+          <label>Select Your Class / Archetype</label>
+          <span style="font-size:0.72rem; color:var(--accent-cyan); font-family:var(--font-mono); font-weight:600;" id="selected-class-stat-summary">HP: 90 | Energy: 125</span>
+        </div>
+        <div class="classes-grid" id="classes-grid">
+          <!-- Dynamically populated with balanced class cards -->
+        </div>
+        <input type="hidden" id="new-game-archetype" value="Runic Scholar">
       </div>
 
       <button class="btn-primary" id="btn-start-new-game" style="width: 100%; justify-content: center; margin-top: 10px; padding: 12px;">

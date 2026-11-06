@@ -95,3 +95,13 @@ for genre, style in [("Cyberpunk Synthwave", "Cyberpunk Synthwave"), ("Cosmic Vo
     d = r.json()
     print(f"Genre: {genre} -> Quest: {d['quest_update']['title']} | Seed: #{d['image_seed']}")
 print("All genres verified successfully!")
+
+print("\n--- 11. Testing Balanced Classes Integration ---")
+for cls_name in ["Runic Scholar", "Ironclad Warden", "Shadow Stalker", "Silver-Tongue Envoy", "Alchemical Medic"]:
+    r = client.post("/api/game/new", json={"theme": "Eldritch Dark Fantasy", "art_style": "Dark Fantasy Graphic Novel", "player_name": "TestHero", "player_archetype": cls_name})
+    assert r.status_code == 200, f"Failed class {cls_name}"
+    resp_data = r.json()
+    p = resp_data["player_status"]
+    inv = resp_data["full_state"]["inventory"]
+    print(f"Class: {cls_name} -> HP: {p['health']}/{p['max_health']}, Energy: {p['energy']}/{p['max_energy']}, Cond: {p['conditions']}, Starter Item: {inv[0]['name']}")
+print("All balanced classes tested successfully!")

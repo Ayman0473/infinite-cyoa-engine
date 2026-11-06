@@ -78,12 +78,15 @@ const el = {
     newGameTheme: document.getElementById("new-game-theme"),
     newGameStyle: document.getElementById("new-game-style"),
     newGamePlayerName: document.getElementById("new-game-player-name"),
-    newGameArchetype: document.getElementById("new-game-archetype")
+    newGameArchetype: document.getElementById("new-game-archetype"),
+    classesGrid: document.getElementById("classes-grid"),
+    selectedClassStatSummary: document.getElementById("selected-class-stat-summary")
 };
 
 // Initialize
 window.addEventListener("DOMContentLoaded", () => {
     initEvents();
+    loadClasses();
     if (state.apiKey) {
         el.inputApiKey.value = state.apiKey;
     }
@@ -152,6 +155,118 @@ function initEvents() {
             const modal = e.target.closest(".modal-overlay");
             if (modal) closeModal(modal);
         });
+    });
+}
+
+async function loadClasses() {
+    if (!el.classesGrid) return;
+    try {
+        const res = await fetch(`${API_BASE}/api/classes`);
+        if (!res.ok) throw new Error("Failed to load classes");
+        const classes = await res.json();
+        renderClassCards(classes);
+    } catch (err) {
+        console.warn("Could not fetch classes from API, using defaults:", err);
+        // Fallback default classes
+        renderClassCards([
+            {
+                name: "Runic Scholar",
+                icon: "🔮",
+                tagline: "Master of ancient glyphs & ether currents",
+                advantage: "High Energy (+25) & Deciphers Arcane Sigils",
+                tradeoff: "Lower physical durability (90 HP)",
+                base_health: 90,
+                base_energy: 125,
+                primary_stat: "Wits (16)",
+                starter_item: { name: "Aether Focusing Lens" }
+            },
+            {
+                name: "Ironclad Warden",
+                icon: "🛡️",
+                tagline: "Unbreakable bulwark against monstrosities",
+                advantage: "High Fortitude (+25 HP) & Heavy Armor Resilience",
+                tradeoff: "Reduced agility & reserve energy (85 Energy)",
+                base_health: 125,
+                base_energy: 85,
+                primary_stat: "Might (16)",
+                starter_item: { name: "Tempered Runesteel Buckler" }
+            },
+            {
+                name: "Shadow Stalker",
+                icon: "🗡️",
+                tagline: "Phantom operative of stealth & ambush",
+                advantage: "Flawless Infiltration & Critical Strike Evasion",
+                tradeoff: "Vulnerable in open slugfests without cover",
+                base_health: 105,
+                base_energy: 105,
+                primary_stat: "Agility (16)",
+                starter_item: { name: "Shadow-Weave Cloak" }
+            },
+            {
+                name: "Silver-Tongue Envoy",
+                icon: "🕊️",
+                tagline: "Master diplomat capable of turning foes into allies",
+                advantage: "+20 Starting NPC Affinity & Persuasion Mastery",
+                tradeoff: "Lower raw martial power in direct assaults",
+                base_health: 100,
+                base_energy: 110,
+                primary_stat: "Presence (16)",
+                starter_item: { name: "Signet of the Free Accord" }
+            },
+            {
+                name: "Alchemical Medic",
+                icon: "🧪",
+                tagline: "Field apothecary and resourceful scavenger",
+                advantage: "Consumables 50% More Potent & Emergency Remedy",
+                tradeoff: "Requires reagent preparation & positioning",
+                base_health: 110,
+                base_energy: 100,
+                primary_stat: "Wits/Survival (14)",
+                starter_item: { name: "Vial of Pure Panacea" }
+            }
+        ]);
+    }
+}
+
+function renderClassCards(classList) {
+    if (!el.classesGrid) return;
+    el.classesGrid.innerHTML = "";
+
+    const currentVal = el.newGameArchetype ? el.newGameArchetype.value : "Runic Scholar";
+
+    classList.forEach((c, idx) => {
+        const card = document.createElement("div");
+        const isSelected = c.name === currentVal || idx === 0;
+        card.className = `class-card ${isSelected ? "selected" : ""}`;
+
+        card.innerHTML = `
+            <div class="class-card-header">
+                <span class="class-card-title">${c.icon} ${escapeHtml(c.name)}</span>
+                <span class="class-card-stat-pill">${escapeHtml(c.primary_stat)}</span>
+            </div>
+            <div class="class-card-advantage">✨ ${escapeHtml(c.advantage)}</div>
+            <div class="class-card-tradeoff">⚖️ ${escapeHtml(c.tradeoff)}</div>
+            <div class="class-card-starter">📦 Starter: <strong>${escapeHtml(c.starter_item?.name || 'Class Relic')}</strong> (HP: ${c.base_health} | Energy: ${c.base_energy})</div>
+        `;
+
+        card.addEventListener("click", () => {
+            window.soundEngine.playClick();
+            document.querySelectorAll(".class-card").forEach(elCard => elCard.classList.remove("selected"));
+            card.classList.add("selected");
+            if (el.newGameArchetype) {
+                el.newGameArchetype.value = c.name;
+            }
+            if (el.selectedClassStatSummary) {
+                el.selectedClassStatSummary.textContent = `HP: ${c.base_health} | Energy: ${c.base_energy} | ${c.primary_stat}`;
+            }
+        });
+
+        if (isSelected && el.selectedClassStatSummary) {
+            el.selectedClassStatSummary.textContent = `HP: ${c.base_health} | Energy: ${c.base_energy} | ${c.primary_stat}`;
+            if (el.newGameArchetype) el.newGameArchetype.value = c.name;
+        }
+
+        el.classesGrid.appendChild(card);
     });
 }
 
