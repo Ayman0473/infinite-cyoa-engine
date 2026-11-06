@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Infinite CYOA - Emergent Story & Consistent Art Engine</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Top App Navigation Bar -->
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <div>
+        <h1>CHRONICLES OF INFINITY</h1>
+      </div>
+      <span class="brand-badge" id="turn-count">Turn 1</span>
+    </div>
+
+    <div class="header-controls">
+      <button class="btn-icon" id="btn-sound" title="Toggle Sound Engine">🔊</button>
+      <button class="btn-icon" id="btn-settings" title="Engine & Model Settings">⚙️</button>
+      <button class="btn-icon" id="btn-export" title="Export Story Chronicle">📜</button>
+      <button class="btn-primary" id="btn-new-game">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        New Story
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Game Workspace -->
+  <main class="main-layout">
+    
+    <!-- Left Column: Stage & Narrative -->
+    <section class="game-stage">
+      
+      <!-- Real-Time Scene Image Frame -->
+      <div class="visual-frame">
+        <img id="visual-image" class="visual-image" alt="Scene Visualization" src="">
+        
+        <!-- Top Overlay Badges: Consistent Art Style & Seed -->
+        <div class="visual-overlay-top">
+          <div class="visual-badges">
+            <span class="badge badge-style" id="badge-style">Dark Fantasy Graphic Novel</span>
+            <span class="badge badge-seed" id="badge-seed">Seed: #48291</span>
+          </div>
+        </div>
+
+        <!-- Active Characters Chips Bar -->
+        <div class="visual-characters-bar" id="active-chars-bar">
+          <!-- Dynamically populated with character avatars -->
+        </div>
+
+        <!-- Visual Generator Loading Overlay -->
+        <div class="visual-loader" id="visual-loader">
+          <div class="spinner"></div>
+          <p style="font-size:0.85rem; color:#94a3b8; font-weight:500;">Synthesizing scene & consequence...</p>
+        </div>
+      </div>
+
+      <!-- Narrative Text Card -->
+      <article class="narrative-card">
+        <div class="scene-meta">
+          <div class="scene-location">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            <span id="scene-location">Ancient Undercroft</span>
+          </div>
+          <span class="scene-turn" id="scene-turn">Turn 1</span>
+        </div>
+
+        <h2 class="scene-title" id="scene-title">Awakening in the Depths</h2>
+        
+        <div class="narrative-text" id="narrative-text">
+          <!-- Story prose injected here -->
+        </div>
+
+        <!-- Event Banner (New items, quest progress, etc.) -->
+        <div class="event-banner hidden" id="event-banner"></div>
+      </article>
+
+      <!-- Action & Choice Zone -->
+      <section class="action-zone">
+        <div class="choices-heading">
+          <span>Choose Your Action</span>
+        </div>
+
+        <!-- Dynamic Context-Sensitive Choices -->
+        <div class="choices-list" id="choices-list">
+          <!-- Dynamically populated choices -->
+        </div>
+
+        <!-- Freeform Custom Action Input -->
+        <div class="custom-action-card">
+          <input 
+            type="text" 
+            id="custom-action-input" 
+            class="custom-action-input" 
+            placeholder="Type your own action... (e.g. 'I speak the forbidden incantation backwards' or 'I offer a bribe')"
+          >
+          <button class="custom-action-btn" id="btn-custom-action">
+            Execute Action ➔
+          </button>
+        </div>
+      </section>
+
+    </section>
+
+    <!-- Right Column: Dynamic Sidebar (Inventory, Quests, Codex) -->
+    <aside class="dynamic-sidebar">
+
+      <!-- Player Status Card -->
+      <div class="hud-panel">
+        <div class="panel-header">
+          <span class="panel-title">Character Status</span>
+        </div>
+        <div class="player-profile">
+          <div class="player-avatar-box" id="player-avatar"></div>
+          <div class="player-info">
+            <h3 id="player-name">Kaelen</h3>
+            <p id="player-archetype">Runic Scholar</p>
+          </div>
+        </div>
+
+        <div class="stat-bars">
+          <!-- Health Bar -->
+          <div class="stat-row">
+            <div class="stat-label-wrap">
+              <span>HEALTH</span>
+              <span id="text-hp">100 / 100</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill-hp" id="bar-hp" style="width: 100%;"></div>
+            </div>
+          </div>
+          <!-- Energy Bar -->
+          <div class="stat-row">
+            <div class="stat-label-wrap">
+              <span>ENERGY</span>
+              <span id="text-energy">100 / 100</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill-energy" id="bar-energy" style="width: 100%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="conditions-row" id="conditions-row">
+          <span class="condition-pill">Vigilant</span>
+        </div>
+      </div>
+
+      <!-- Current Quest HUD Widget (Updated Automatically by AI) -->
+      <div class="hud-panel">
+        <div class="panel-header">
+          <span class="panel-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polygon points="12 6 12 12 16 14"></polygon>
+            </svg>
+            Current Quest
+          </span>
+          <span id="quest-percent" style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-gold); font-weight:700;">15%</span>
+        </div>
+
+        <div class="quest-crest">
+          <div class="quest-icon">⚡</div>
+          <div class="quest-details">
+            <h4 id="quest-title">The Cipher of the Veiled Sun</h4>
+            <div class="quest-stage" id="quest-stage">Stage 1: Infiltrate the Undercroft</div>
+          </div>
+        </div>
+
+        <div class="quest-progress-wrap">
+          <div class="quest-bar-track">
+            <div class="quest-bar-fill" id="quest-bar-fill" style="width: 15%;"></div>
+          </div>
+        </div>
+
+        <div class="objectives-list" id="objectives-list">
+          <!-- Dynamic checklist items -->
+        </div>
+      </div>
+
+      <!-- Inventory HUD Widget (Updated Automatically by AI) -->
+      <div class="hud-panel">
+        <div class="panel-header">
+          <span class="panel-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+            </svg>
+            Inventory <span id="inventory-count" style="color:var(--accent-cyan);">(2)</span>
+          </span>
+          <span style="font-size:0.68rem; color:var(--text-dim);">CLICK ITEM TO USE</span>
+        </div>
+
+        <div class="inventory-grid" id="inventory-grid">
+          <!-- Dynamic item slots -->
+        </div>
+      </div>
+
+      <!-- Character Codex (Met Souls & Allies) -->
+      <div class="hud-panel">
+        <div class="panel-header">
+          <span class="panel-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            Character Codex
+          </span>
+        </div>
+
+        <div class="codex-list" id="codex-list">
+          <!-- Character cards -->
+        </div>
+      </div>
+
+    </aside>
+
+  </main>
+
+  <!-- Modals -->
+
+  <!-- Modal: New Game Setup -->
+  <div class="modal-overlay" id="new-game-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Begin a New Adventure</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+
+      <div class="form-group">
+        <label>Genre / Theme Universe</label>
+        <select class="form-control" id="new-game-theme">
+          <option value="Eldritch Dark Fantasy">Eldritch Dark Fantasy (Ruined spires, ancient seals, forgotten gods)</option>
+          <option value="Cyberpunk Synthwave">Cyberpunk Synthwave (Neon megacity, cyberdecks, corporate rogue AIs)</option>
+          <option value="Cosmic Void Eldritch">Cosmic Void Eldritch (Derelict generation ships, star-singularity)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Consistent Art Style</label>
+        <select class="form-control" id="new-game-style">
+          <option value="Dark Fantasy Graphic Novel">Dark Fantasy Graphic Novel (Mike Mignola, heavy ink, cel outlines)</option>
+          <option value="Cyberpunk Synthwave">Cyberpunk Synthwave (Syd Mead, neon rain, volumetric glow)</option>
+          <option value="High Fantasy Watercolor">High Fantasy Watercolor (Alan Lee, textured parchment, gouache)</option>
+          <option value="Cinematic Studio Anime">Cinematic Studio Anime (Makoto Shinkai & Ghibli, rich colors)</option>
+          <option value="Medieval Woodcut Engraving">Medieval Woodcut Engraving (Albrecht Dürer, fine crosshatch)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Protagonist Name</label>
+        <input type="text" class="form-control" id="new-game-player-name" value="Kaelen" placeholder="Your character's name">
+      </div>
+
+      <div class="form-group">
+        <label>Archetype / Class</label>
+        <input type="text" class="form-control" id="new-game-archetype" value="Runic Scholar" placeholder="e.g. Rogue Netrunner, Void Explorer">
+      </div>
+
+      <button class="btn-primary" id="btn-start-new-game" style="width: 100%; justify-content: center; margin-top: 10px; padding: 12px;">
+        Ignite the Journey ➔
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal: Settings & LLM Keys -->
+  <div class="modal-overlay" id="settings-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Engine Settings</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+
+      <div class="form-group">
+        <label>Gemini API Key (Optional)</label>
+        <input type="password" class="form-control" id="input-api-key" placeholder="Enter your Gemini API Key for live AI generation">
+        <p style="font-size:0.75rem; color:var(--text-dim); margin-top:4px;">
+          Leave empty to use the built-in Procedural Simulation Engine (100% zero-config, runs offline!).
+        </p>
+      </div>
+
+      <button class="btn-primary" id="btn-save-settings" style="width: 100%; justify-content: center; margin-top: 12px;">
+        Save Configuration
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal: Item Inspector & Action -->
+  <div class="modal-overlay" id="item-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="item-modal-title">Item Name</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <p id="item-modal-cat" style="font-size:0.75rem; color:var(--accent-gold); text-transform:uppercase; font-weight:600; margin-bottom:10px;"></p>
+      <p id="item-modal-desc" style="font-size:0.95rem; color:#cbd5e1; line-height:1.6; margin-bottom:20px;"></p>
+      <div style="display:flex; gap:10px;">
+        <button class="btn-primary" id="btn-use-item" style="flex:1; justify-content:center;">
+          Use Item in Current Scene
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Character Dossier & Visual DNA -->
+  <div class="modal-overlay" id="char-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <h3 id="char-modal-name">Character Name</h3>
+          <p id="char-modal-role" style="font-size:0.75rem; color:var(--accent-cyan);"></p>
+        </div>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div style="display:flex; gap:16px; margin-bottom:16px;">
+        <div id="char-modal-avatar" style="width:100px; height:100px; flex-shrink:0;"></div>
+        <div id="char-modal-dna" style="flex:1;"></div>
+      </div>
+      <div style="border-top:1px solid var(--border-subtle); padding-top:12px;">
+        <h5 style="font-size:0.75rem; color:var(--text-dim); text-transform:uppercase; margin-bottom:4px;">Lore Notes</h5>
+        <p id="char-modal-notes" style="font-size:0.85rem; color:#cbd5e1;"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audio and Controller Scripts -->
+  <script src="audio.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
