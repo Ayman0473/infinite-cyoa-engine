@@ -58,6 +58,110 @@ class Character(BaseModel):
     avatar_url: Optional[str] = None
 
 
+CLASS_ARCHETYPES: Dict[str, Dict[str, Any]] = {
+    "Runic Scholar": {
+        "id": "runic_scholar",
+        "name": "Runic Scholar",
+        "icon": "🔮",
+        "tagline": "Master of ancient glyphs, ether currents & forbidden lore",
+        "advantage": "High Energy (+25) & Deciphers Arcane Sigils",
+        "tradeoff": "Lower physical durability (90 HP)",
+        "base_health": 90,
+        "base_energy": 125,
+        "primary_stat": "Wits (16)",
+        "stats": {"Might": 8, "Wits": 16, "Agility": 11, "Presence": 12},
+        "condition": "Arcane Insight",
+        "starter_item": {
+            "id": "aether_lens",
+            "name": "Aether Focusing Lens",
+            "description": "An attuned optical lens that reveals hidden glyphs, leyline currents, and invisible anomalies.",
+            "category": "artifact",
+            "icon": "gem"
+        }
+    },
+    "Ironclad Warden": {
+        "id": "ironclad_warden",
+        "name": "Ironclad Warden",
+        "icon": "🛡️",
+        "tagline": "Unbreakable bulwark against monstrosities & traps",
+        "advantage": "High Fortitude (+25 HP) & Heavy Armor Resilience",
+        "tradeoff": "Reduced agility and reserve energy (85 Energy)",
+        "base_health": 125,
+        "base_energy": 85,
+        "primary_stat": "Might (16)",
+        "stats": {"Might": 16, "Wits": 9, "Agility": 10, "Presence": 12},
+        "condition": "Unyielding Stance",
+        "starter_item": {
+            "id": "tempered_buckler",
+            "name": "Tempered Runesteel Buckler",
+            "description": "A reinforced shield capable of absorbing devastating direct blows and surviving lethal ambushes.",
+            "category": "weapon",
+            "icon": "shield"
+        }
+    },
+    "Shadow Stalker": {
+        "id": "shadow_stalker",
+        "name": "Shadow Stalker",
+        "icon": "🗡️",
+        "tagline": "Phantom operative of stealth, infiltration & ambush",
+        "advantage": "Flawless Infiltration & Critical Strike Evasion",
+        "tradeoff": "Vulnerable in open slugfests without cover",
+        "base_health": 105,
+        "base_energy": 105,
+        "primary_stat": "Agility (16)",
+        "stats": {"Might": 10, "Wits": 12, "Agility": 16, "Presence": 9},
+        "condition": "Silentshadow",
+        "starter_item": {
+            "id": "shadow_cloak",
+            "name": "Shadow-Weave Cloak",
+            "description": "A light-absorbing mantle that bends peripheral vision, muffles footsteps, and slips warded gates.",
+            "category": "artifact",
+            "icon": "scroll"
+        }
+    },
+    "Silver-Tongue Envoy": {
+        "id": "silver_tongue_envoy",
+        "name": "Silver-Tongue Envoy",
+        "icon": "🕊️",
+        "tagline": "Master diplomat capable of turning foes into allies",
+        "advantage": "+20 Starting NPC Affinity & Persuasion Mastery",
+        "tradeoff": "Lower raw martial power in direct assaults",
+        "base_health": 100,
+        "base_energy": 110,
+        "primary_stat": "Presence (16)",
+        "stats": {"Might": 9, "Wits": 12, "Agility": 10, "Presence": 16},
+        "condition": "Silver-Tongued",
+        "starter_item": {
+            "id": "guild_signet",
+            "name": "Signet of the Free Accord",
+            "description": "A recognized diplomatic seal that commands respect, prevents hostilities, and unlocks hidden bargains.",
+            "category": "key_item",
+            "icon": "spark"
+        }
+    },
+    "Alchemical Medic": {
+        "id": "alchemical_medic",
+        "name": "Alchemical Medic",
+        "icon": "🧪",
+        "tagline": "Field apothecary and resourceful survival scavenger",
+        "advantage": "Consumables 50% More Potent & Emergency Remedy",
+        "tradeoff": "Requires reagent preparation and clever positioning",
+        "base_health": 110,
+        "base_energy": 100,
+        "primary_stat": "Wits/Survival (14)",
+        "stats": {"Might": 11, "Wits": 14, "Agility": 11, "Presence": 11},
+        "condition": "Field Alchemist",
+        "starter_item": {
+            "id": "panacea_elixir",
+            "name": "Vial of Pure Panacea",
+            "description": "A masterwork curative draught that heals 50 HP and cures all negative status conditions.",
+            "category": "consumable",
+            "icon": "potion"
+        }
+    }
+}
+
+
 class Choice(BaseModel):
     id: str
     text: str

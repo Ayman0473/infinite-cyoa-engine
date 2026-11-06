@@ -16,7 +16,8 @@ import httpx
 from models import (
     GameState, Quest, Objective, InventoryItem, Character,
     CharacterVisualDNA, Choice, PlayerStatus, StoryNode,
-    NewGameRequest, TurnActionRequest, TurnActionResponse
+    NewGameRequest, TurnActionRequest, TurnActionResponse,
+    CLASS_ARCHETYPES
 )
 from visual_engine import (
     build_character_visual_dna, build_scene_image_prompt,
@@ -257,14 +258,37 @@ class ProceduralAdventureDirector:
             session_id=session_id
         )
 
+        # Class Archetype configuration
+        class_info = CLASS_ARCHETYPES.get(req.player_archetype)
+        if not class_info:
+            # Fallback search by id or partial name
+            for c_name, c_data in CLASS_ARCHETYPES.items():
+                if c_name.lower() in req.player_archetype.lower() or c_data["id"] == req.player_archetype.lower():
+                    class_info = c_data
+                    break
+
+        if class_info:
+            base_hp = class_info["base_health"]
+            base_energy = class_info["base_energy"]
+            player_stats = class_info["stats"]
+            player_conditions = ["Vigilant", class_info["condition"]]
+            starter_item = InventoryItem(**class_info["starter_item"])
+        else:
+            base_hp = 100
+            base_energy = 100
+            player_stats = {"Might": 12, "Wits": 14, "Agility": 13, "Presence": 11}
+            player_conditions = ["Vigilant"]
+            starter_item = None
+
         player_status = PlayerStatus(
             name=req.player_name,
             archetype=req.player_archetype,
-            health=100,
-            max_health=100,
-            energy=100,
-            max_energy=100,
-            conditions=["Vigilant"],
+            health=base_hp,
+            max_health=base_hp,
+            energy=base_energy,
+            max_energy=base_energy,
+            conditions=player_conditions,
+            stats=player_stats,
             visual_dna=player_dna
         )
 
@@ -283,9 +307,11 @@ class ProceduralAdventureDirector:
             status="active"
         )
 
-        # Starting inventory: 2 theme-appropriate items
+        # Starting inventory: 2 theme-appropriate items + class unique starter item
         items = random.sample(genre["item_pool"], 2)
         inv = [InventoryItem(**it) for it in items]
+        if starter_item:
+            inv.insert(0, starter_item)
 
         # Starting NPC met or nearby
         npc_data = random.choice(genre["npc_pool"])
@@ -296,11 +322,15 @@ class ProceduralAdventureDirector:
             session_id=session_id,
             custom_desc=npc_data["visual"]
         )
+        base_affinity = npc_data["affinity"]
+        if class_info and class_info.get("id") == "silver_tongue_envoy":
+            base_affinity = min(100, base_affinity + 20)
+
         starting_npc = Character(
             id=f"char_{npc_data['name'].lower()}",
             name=npc_data["name"],
             role=npc_data["role"],
-            affinity=npc_data["affinity"],
+            affinity=base_affinity,
             visual_dna=npc_dna,
             notes=npc_data["notes"],
             avatar_url=None
