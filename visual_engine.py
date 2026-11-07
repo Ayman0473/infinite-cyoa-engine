@@ -4,6 +4,7 @@ Maintains persistent character visual anchors, deterministic seeds, and unified 
 Includes instant procedural SVG scene & portrait generators for 100% offline/timeout-proof rendering.
 """
 import hashlib
+import html
 import urllib.parse
 from typing import Dict, List, Optional, Any
 from models import Character, CharacterVisualDNA, GameState
