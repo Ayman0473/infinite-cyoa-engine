@@ -10,17 +10,23 @@ An infinite, emergent choose-your-own-adventure engine with real-time consistent
 
 ## ✨ Features
 
-- **Emergent Branching Narrative**: Choices genuinely alter plot direction, NPC relationships, quests, and world conditions. No fixed rails or pre-scripted endings.
-- **Custom Freeform Actions**: In addition to dynamic context choices, type any custom action (e.g., *"I inspect the ancient runes with my lens"* or *"I offer the guard a bribe"*).
+- **Emergent Branching Narrative**: Context-sensitive choices genuinely alter upcoming plot direction, NPC relationships, quests, and world conditions. No fixed rails or pre-scripted endings.
+- **Balanced Class Archetypes**: Choose from 5 distinct, balanced character builds with unique perks and starter gear:
+  - 🔮 **Runic Scholar**: +25 Max Energy (125 Energy) & Arcane Insight; lower physical HP (90). Starts with the *Aether Focusing Lens*.
+  - 🛡️ **Ironclad Warden**: +25 Max Fortitude (125 HP) & Heavy Armor Resilience; reduced energy (85). Starts with the *Tempered Runesteel Buckler*.
+  - 🗡️ **Shadow Stalker**: Balanced 105 HP / 105 Energy; Infiltration & Critical Strike Evasion. Starts with the *Shadow-Weave Cloak*.
+  - 🕊️ **Silver-Tongue Envoy**: +20 Starting NPC Affinity & Persuasion Mastery; balanced 100 HP / 110 Energy. Starts with the *Signet of the Free Accord*.
+  - 🧪 **Alchemical Medic**: Consumables 50% more potent & Field Alchemy; balanced 110 HP / 100 Energy. Starts with the *Vial of Pure Panacea*.
 - **Consistent Art Style & Character DNA**:
-  - Persistent character visual tokens (hair, eyes, facial traits, gear, apparel).
-  - Seed-anchored art styles: Dark Fantasy Graphic Novel, Cyberpunk Synthwave, High Fantasy Watercolor, Cosmic Void, Cinematic Anime, and Medieval Woodcut.
+  - Persistent character visual tokens (hair, eyes, facial traits, gear, apparel) and seed locks ensure characters look identical across scenes.
+  - Curated art styles: Dark Fantasy Graphic Novel, Cyberpunk Synthwave, High Fantasy Watercolor, Cosmic Void, Cinematic Anime, and Medieval Woodcut.
   - Zero-latency rendering pipeline with instant procedural SVG scene fallback and real-time AI image cross-fading.
 - **Dynamic Sidebar HUD**:
-  - **Current Quest**: Multi-stage tracking with auto-updating objectives and progress bar.
+  - **Current Quest**: Multi-stage tracking with auto-updating objectives and live progress bar.
   - **Inventory Grid**: Slot-based management. Inspect lore or use items directly in the current scene.
   - **Character Codex**: Catalog of discovered NPCs with visual avatars and live affinity meters.
-  - **Player Status**: Health, energy, and conditions (*Vigilant*, *Wounded*, *Ether-touched*).
+  - **Player Status**: Health, energy, and conditions (*Vigilant*, *Arcane Insight*, *Silentshadow*, etc.).
+- **Chronicle Export**: 1-click Markdown export (📜 button in header) to save or download your full adventure chronicle, turns lived, and decisions taken.
 - **Dual Engine Architecture**:
   - **Built-in Procedural Director**: Works 100% offline with zero configuration or API keys required.
   - **Live AI Mode**: Optional Gemini API key support via in-game settings modal (`⚙️`).
@@ -32,7 +38,7 @@ An infinite, emergent choose-your-own-adventure engine with real-time consistent
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/YOUR_USERNAME/infinite-cyoa-engine.git
+git clone https://github.com/Ayman0473/infinite-cyoa-engine.git
 cd infinite-cyoa-engine
 ```
 
