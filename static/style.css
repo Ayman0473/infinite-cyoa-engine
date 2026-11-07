@@ -1077,3 +1077,90 @@ body {
   align-items: center;
   gap: 4px;
 }
+
+/* ==========================================================================
+   Choice 50s Cooldown Timer HUD
+   ========================================================================== */
+.choice-timer-card {
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 8px;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: all 0.3s ease;
+}
+
+.choice-timer-card.unlocked {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+.choice-timer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.timer-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #38bdf8;
+  font-family: var(--font-mono);
+  letter-spacing: 0.03em;
+}
+
+.choice-timer-card.unlocked .timer-label {
+  color: #34d399;
+}
+
+.timer-skip-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.timer-skip-btn:hover {
+  background: rgba(56, 189, 248, 0.2);
+  color: #ffffff;
+  border-color: var(--accent-cyan);
+}
+
+.timer-track {
+  width: 100%;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.timer-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #06b6d4, #a855f7);
+  border-radius: 3px;
+  transition: width 1s linear;
+}
+
+.choice-timer-card.unlocked .timer-fill {
+  background: #10b981;
+}
+
+/* Locked Choice Buttons during 50s Timer */
+.choice-btn.locked {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+  filter: grayscale(0.4);
+  border-style: dashed;
+}
+
+.choice-btn.locked:hover {
+  transform: none;
+  box-shadow: none;
+}

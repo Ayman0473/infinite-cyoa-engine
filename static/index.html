@@ -98,6 +98,17 @@
           <span>Choose Your Action</span>
         </div>
 
+        <!-- Action Cooldown Timer HUD (50s) -->
+        <div class="choice-timer-card" id="choice-timer-card">
+          <div class="choice-timer-header">
+            <span class="timer-label" id="timer-label">⏳ Contemplating Consequences: <strong id="timer-seconds">50s</strong></span>
+            <button class="timer-skip-btn" id="btn-skip-timer" title="Skip cooldown and choose immediately">Skip ⚡</button>
+          </div>
+          <div class="timer-track">
+            <div class="timer-fill" id="timer-fill" style="width: 100%;"></div>
+          </div>
+        </div>
+
         <!-- Dynamic Context-Sensitive Choices -->
         <div class="choices-list" id="choices-list">
           <!-- Dynamically populated choices -->

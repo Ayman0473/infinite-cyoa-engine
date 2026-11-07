@@ -80,7 +80,12 @@ const el = {
     newGamePlayerName: document.getElementById("new-game-player-name"),
     newGameArchetype: document.getElementById("new-game-archetype"),
     classesGrid: document.getElementById("classes-grid"),
-    selectedClassStatSummary: document.getElementById("selected-class-stat-summary")
+    selectedClassStatSummary: document.getElementById("selected-class-stat-summary"),
+    choiceTimerCard: document.getElementById("choice-timer-card"),
+    timerLabel: document.getElementById("timer-label"),
+    timerSeconds: document.getElementById("timer-seconds"),
+    timerFill: document.getElementById("timer-fill"),
+    btnSkipTimer: document.getElementById("btn-skip-timer")
 };
 
 // Initialize
@@ -138,6 +143,12 @@ function initEvents() {
         window.soundEngine.playChoiceSelect();
         startNewAdventure();
     });
+
+    if (el.btnSkipTimer) {
+        el.btnSkipTimer.addEventListener("click", () => {
+            unlockChoices();
+        });
+    }
 
     if (el.btnCustomAction) {
         el.btnCustomAction.addEventListener("click", () => {
@@ -534,7 +545,8 @@ function renderChoices(choices) {
 
     choices.forEach(ch => {
         const btn = document.createElement("button");
-        btn.className = "choice-btn";
+        btn.className = "choice-btn locked";
+        btn.disabled = true;
         
         let tagClass = "tag-default";
         const tagUpper = (ch.tag || "").toUpperCase();
@@ -549,12 +561,72 @@ function renderChoices(choices) {
         `;
 
         btn.addEventListener("click", () => {
+            if (timerInterval) clearInterval(timerInterval);
             window.soundEngine.playClick();
             sendAction(ch.id, null, null);
         });
 
         el.choicesList.appendChild(btn);
     });
+
+    // Start 50-second consideration cooldown timer
+    startChoiceTimer(50);
+}
+
+let timerRemaining = 50;
+let timerInterval = null;
+
+function startChoiceTimer(duration = 50) {
+    if (timerInterval) clearInterval(timerInterval);
+    timerRemaining = duration;
+
+    // Lock all choice buttons
+    const buttons = document.querySelectorAll(".choice-btn");
+    buttons.forEach(btn => {
+        btn.classList.add("locked");
+        btn.disabled = true;
+    });
+
+    if (el.choiceTimerCard) {
+        el.choiceTimerCard.classList.remove("unlocked");
+        el.choiceTimerCard.style.display = "flex";
+    }
+    if (el.timerSeconds) el.timerSeconds.textContent = `${duration}s`;
+    if (el.timerFill) el.timerFill.style.width = "100%";
+    if (el.timerLabel) el.timerLabel.innerHTML = `⏳ Contemplating Consequences: <strong id="timer-seconds">${duration}s</strong>`;
+
+    timerInterval = setInterval(() => {
+        timerRemaining--;
+        const pct = Math.max(0, (timerRemaining / duration) * 100);
+        if (el.timerFill) el.timerFill.style.width = `${pct}%`;
+        const secElem = document.getElementById("timer-seconds");
+        if (secElem) secElem.textContent = `${timerRemaining}s`;
+
+        if (timerRemaining <= 0) {
+            unlockChoices();
+        }
+    }, 1000);
+}
+
+function unlockChoices() {
+    if (timerInterval) clearInterval(timerInterval);
+    timerInterval = null;
+
+    const buttons = document.querySelectorAll(".choice-btn");
+    buttons.forEach(btn => {
+        btn.classList.remove("locked");
+        btn.disabled = false;
+    });
+
+    if (el.choiceTimerCard) {
+        el.choiceTimerCard.classList.add("unlocked");
+    }
+    if (el.timerLabel) {
+        el.timerLabel.innerHTML = `✨ Path Unlocked — Select Your Next Move`;
+    }
+    if (el.timerFill) el.timerFill.style.width = "100%";
+
+    if (window.soundEngine) window.soundEngine.playChoiceSelect();
 }
 
 function renderPlayerStatus(player) {

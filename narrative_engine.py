@@ -339,35 +339,39 @@ class ProceduralAdventureDirector:
         location = genre["locations"][0]
         scene_title = f"Awakening at {location.split(' - ')[0]}"
 
-        # Craft atmospheric opening narrative
+        # Craft atmospheric opening narrative (calibrated for ~45 seconds reading time, ~180 words)
         if "cyber" in req.theme.lower():
             narrative = (
-                f"Rain cascades down the jagged neon spire of {location}, sizzling against the hot ventilation grates beneath your combat boots. "
-                f"You are {req.player_name}, known across the undercity as a skilled {req.player_archetype}. "
-                f"Your optical HUD blinks with an urgent encrypted ping: **[{quest.title}]**. The contract has gone live, and corporate retrieval squads are already sweeping the district.\n\n"
-                f"Near the flickering holograms of a noodle stall, {starting_npc.name} emerges from the steam, their coat collar pulled high. "
-                f"\"{req.player_name}, you're late,\" they mutter, glancing over their shoulder at the overhead search drones humming through the smog. "
-                f"\"They just tripped the perimeter alarm at the terminal. If we don't breach the mainframe right now, the shard self-terminates.\""
+                f"Acid rain cascades ceaselessly down the jagged, monolithic spire of {location}, hissing as it strikes the superheated ventilation grates beneath your heavy combat boots. "
+                f"You are {req.player_name}, feared and respected throughout the subterranean undercity as a formidable {req.player_archetype}. "
+                f"Your neural HUD reticle pulses with an urgent amber alert: **[{quest.title}]**. The contract has formally gone live on the darknet, and corporate clean-up strike teams are already jamming communications across the lower districts.\n\n"
+                f"From behind the flickering neon advertisements of an alleyway synth-noodle stall, {starting_npc.name} emerges through clouds of exhaust steam, their high-collar jacket pulled tight against the damp chill. "
+                f"\"{req.player_name}, you cut it close,\" they mutter grimly, eyes darting upward as a surveillance gunship banks silently through the dense chemical smog above. "
+                f"\"OmniCorp security just breached the sub-grid firewalls. If we don't penetrate the terminal and extract the encrypted memory core within the hour, the failsafe triggers and flatlines everything within five blocks.\"\n\n"
+                f"In the distance, sirens wail against the thrum of heavy hover-traffic. The neon reflections pool like spilled oil across the slick asphalt, offering no promises of safe return."
             )
         elif "cosmic" in req.theme.lower():
             narrative = (
-                f"The atmospheric airlock hiss subsides as you step onto the frozen catwalks of {location}. "
-                f"Beyond the reinforced quartz viewing dome, the cold accretion disk churns in silent violet fury. "
-                f"You are {req.player_name}, a seasoned {req.player_archetype}. In your grip, your instruments register the faint pulse of **[{quest.title}]**.\n\n"
-                f"Ahead in the dimly lit corridor, {starting_npc.name} kneels beside a scorched telemetry station. "
-                f"Hearing your footsteps, they rise and turn, their visor catching the cosmic starlight. "
-                f"\"It wasn't an engine failure that crippled this ship,\" {starting_npc.name} whispers through the comms. "
-                f"\"Look at the hull breaches—they were torn from the inside out. Whatever answered our transmission is already here.\""
+                f"The pneumatic airlock hisses into dead silence as the heavy blast doors seal behind you on the frozen catwalks of {location}. "
+                f"Through the massive quartz observation dome overhead, the violet accretion disk of the singularity churns in terrifying, slow-motion fury, bathing the derelict bulkheads in spectral ultraviolet light. "
+                f"You are {req.player_name}, a veteran {req.player_archetype} whose navigational beacons have locked onto the anomalous harmonic frequency of **[{quest.title}]**.\n\n"
+                f"Further down the corridor, illuminated only by erratic emergency conduits, {starting_npc.name} kneels beside a scorched telemetry console. "
+                f"Hearing the magnetic clatter of your boots, they rise and turn, starlight glinting off their cracked visor. "
+                f"\"It wasn't an atmospheric breach or engine failure that crippled this vessel,\" {starting_npc.name} whispers across the crackling short-range comms channel. "
+                f"\"Look at the bulkheads—the reinforced plating was warped and torn from the inside out. Whatever answered our long-range transmission didn't board the ship; it was waiting in the core all along.\"\n\n"
+                f"A low vibration rattles your sternum as zero-point energy vents through the floorplates. The void outside remains utterly still, yet every instinct screams that you are not alone."
             )
         else:
             narrative = (
-                f"A bitter wind howls through the fractured stone ribs of {location}. Dust motes drift like dying embers through shafts of pale twilight. "
-                f"You are {req.player_name}, a {req.player_archetype} whose fate has been bound to the ancient omen known as **[{quest.title}]**. "
-                f"The weight of the relic at your hip hums with an uncanny warmth, responding to the subterranean pulse of the sanctuary.\n\n"
-                f"From the shadow of a shattered archway steps {starting_npc.name}. "
-                f"Their watchful eyes study you, hand resting cautiously near their waist. "
-                f"\"I did not believe another soul would brave this cursed sanctum,\" {starting_npc.name} murmurs softly. "
-                f"\"The bells have begun tolling in the lower crypts. If we tarry here, the wardens of the seal will find us unprepared.\""
+                f"A piercing wind moans through the petrified stone ribcage of {location}, scattering ancient soot and powdered bone like dead embers across the floor. "
+                f"Shafts of pale, sickly twilight filter down through shattered clerestory windows, revealing forgotten bas-reliefs carved in tribute to nameless gods. "
+                f"You are {req.player_name}, a resolute {req.player_archetype} whose bloodline has been irrevocably entangled with the cursed portent known as **[{quest.title}]**. "
+                f"At your hip, your starter relic pulses with a low, uncanny warmth, humming in direct sympathy with the subterranean vibrations of the altar.\n\n"
+                f"From the deep gloom of a vaulted cloister steps {starting_npc.name}, their cloak rustling like dried parchment. "
+                f"Their weathered gaze scrutinizes you with a mixture of dread and fragile hope, one hand hovering near the hilt at their waist. "
+                f"\"I prayed another soul would find their way here before the third watch,\" {starting_npc.name} murmurs in a voice raspy from smoke and vigil. "
+                f"\"The bells in the drowned catacombs have begun tolling without human hands. If we do not unseal the inner sanctuary before the moon wanes, the wardens will awake hungry.\"\n\n"
+                f"Far below, water drips with rhythmic, maddening certainty into unseen chasms, measuring out the remaining moments of peace."
             )
 
         # Image generation
@@ -552,11 +556,12 @@ class ProceduralAdventureDirector:
         narrative = (
             f"**Your Decision**: *\"{action_clean}\"*\n\n"
             f"{item_effect_str}"
-            f"You press forward through the shadowy expanse of {location}. The weight of your choice ripples through the environment immediately: "
-            f"ancient runes glow with heightened intensity as the stones shudder, responding to your direct intervention. "
-            f"{active_char_name} follows your lead, their posture shifting with newfound urgency. "
-            f"\"Careful,\" they murmur, gesturing toward the chamber ahead where eerie luminescence spills across the flagstones. "
-            f"\"The threshold has awakened to our presence. Whatever sleep was held here has been irrevocably shattered.\""
+            f"Without hesitation, you advance through the foreboding expanse of {location}. Every stone beneath your boots carries centuries of silent memory, vibrating faintly as your actions disrupt the lingering stasis of the domain. "
+            f"Chilled air rushes past your face, thick with the smell of scorched incense and aged iron. The physical consequence of your choice unfolds immediately—runic glyphs etched into the vaulted ceiling flare with pale bioluminescence, casting elongated, dancing shadows against the cracked masonry.\n\n"
+            f"{active_char_name} keeps pace beside you, their gaze darting between the arching buttresses and the obscured passageways ahead. "
+            f"\"Steady yourself,\" they caution in a hushed cadence, checking the seals along their garments. \"The warding threshold has registered our presence. The currents in this place are alive, and every step we take draws the attention of whatever sleeps in the lower vaults.\"\n\n"
+            f"Ahead, the corridor descends steeply toward an arched gateway, where faint etheric mists coil lazily above the cold flagstones. "
+            f"A heavy silence settles over the threshold—the kind that precedes an ambush or an irreversible revelation. You pause to catch your breath, your senses dialed to a razor's edge as you weigh the diverging paths before you."
             f"{found_item_str}"
             f"{quest_str}"
         )
