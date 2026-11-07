@@ -139,15 +139,19 @@ function initEvents() {
         startNewAdventure();
     });
 
-    el.btnCustomAction.addEventListener("click", () => {
-        submitCustomAction();
-    });
-
-    el.customActionInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
+    if (el.btnCustomAction) {
+        el.btnCustomAction.addEventListener("click", () => {
             submitCustomAction();
-        }
-    });
+        });
+    }
+
+    if (el.customActionInput) {
+        el.customActionInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                submitCustomAction();
+            }
+        });
+    }
 
     // Close buttons on modals
     document.querySelectorAll(".modal-close").forEach(btn => {
