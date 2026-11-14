@@ -20,7 +20,6 @@ An infinite, emergent choose-your-own-adventure engine with real-time consistent
 - **Consistent Art Style & Character DNA**:
   - Persistent character visual tokens (hair, eyes, facial traits, gear, apparel) and seed locks ensure characters look identical across scenes.
   - Curated art styles: Dark Fantasy Graphic Novel, Cyberpunk Synthwave, High Fantasy Watercolor, Cosmic Void, Cinematic Anime, and Medieval Woodcut.
-  - Zero-latency rendering pipeline with instant procedural SVG scene fallback and real-time AI image cross-fading.
 - **Dynamic Sidebar HUD**:
   - **Current Quest**: Multi-stage tracking with auto-updating objectives and live progress bar.
   - **Inventory Grid**: Slot-based management. Inspect lore or use items directly in the current scene.
